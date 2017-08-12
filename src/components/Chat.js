@@ -30,7 +30,6 @@ class ChatComponent extends React.Component {
     };
 
     this.onSend = this.onSend.bind(this);
-    this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this.renderBubble = this.renderBubble.bind(this);
     this.renderFooter = this.renderFooter.bind(this);
 
@@ -41,10 +40,6 @@ class ChatComponent extends React.Component {
     receiveMessage((msg) => this.props.newMsg(msg));
   }
 
-  onReceivedMessage(messages) {
-    this._storeMessages(messages);
-  }
-
   componentWillMount() {
     //this.props.getChats();
   }
@@ -52,14 +47,17 @@ class ChatComponent extends React.Component {
   //
   componentWillReceiveProps(nextProps) {
     //Alert.alert('Received ', JSON.stringify(nextProps.chat.chats));
+    
     console.log(nextProps.chat.chats);
+
     this._storeMessages(nextProps.chat.chats);
   }
 
   onSend(messages = []) {
     //Alert.alert('onSend: ', JSON.stringify(messages));
+    console.log('onSend: ', messages);
     this.props.sendChat(this.state.username, messages[0]);
-    this._storeMessages(messages);
+    this._storeMessages(messages[0]);
   }
 
 
@@ -114,6 +112,10 @@ class ChatComponent extends React.Component {
       };
    */
   _storeMessages(messages) {
+    
+
+    //messages[0]._id = Math.round(Math.random() * 1000000);
+    //messages[0].createdAt = new Date();
     console.log('setState: ', messages);
     this.setState((previousState) => {
       

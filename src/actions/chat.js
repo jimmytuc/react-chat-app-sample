@@ -80,20 +80,23 @@ export function receiveMessage(cb){
     const channel = socket.subscribe(Channel);
 
     try {
-        const responder = {
-            sender: 'guest1',
-            message: { 
-                text: '',
-                user: {
-                    _id: 99,
-                    name: "@nana"
-                },
-                createdAt: new Date(),
-                _id: Math.round(Math.random() * 1000000)
-            }
-        };
+        
         channel.bind(BindName,
             (data) => {
+                const responder = {
+                    sender: 'guest1',
+                    message: { 
+                        text: '',
+                        user: {
+                            _id: 99,
+                            name: "@nana"
+                        },
+                        createdAt: new Date(),
+                        _id: Math.round(Math.random() * 1000000)
+                    }
+                };
+
+
                 console.log('received from server: ', data);
                 responder.message.text = data.chat;
                 addToStorage(responder);

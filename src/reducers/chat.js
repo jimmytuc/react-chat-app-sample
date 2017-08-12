@@ -17,7 +17,8 @@ export default (state = {chats:[]}, actions) => {
             //Alert.alert('RECEIVE_MESSAGE - PAYLOAD ', JSON.stringify(actions.payload));
             return Object.assign({}, state, {
                 process_status: 'completed',
-                chats: [...state.chats, actions.payload.message]
+                //chats: [...state.chats, actions.payload.message]
+                chats: [actions.payload.message]
             });
 
         default:
