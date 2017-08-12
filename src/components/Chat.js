@@ -1,44 +1,32 @@
 import React, { Component, PropTypes } from 'react';
 import { Platform, StyleSheet, Text, View, TouchableHighlight, ActivityIndicator } from 'react-native';
-import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 
-const styles = StyleSheet.create({
-  footerContainer: {
-    marginTop: 5,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
-  },
-  footerText: {
-    fontSize: 14,
-    color: '#aaa',
-  }
-});
+import { GiftedChat } from 'react-native-gifted-chat';
 
 
-export default class Chat extends Component {
-
+export default class ChatComponent extends Component {
+  
   /**
    * 
    * @param {*} props 
    */
   constructor(props) {
     super(props);
-    this.state = {
+    /*this.state = {
       messages: [],
       loadEarlier: true,
       isLoadingEarlier: false,
       username: "guest1"
-    };
+    };*/
 
     // get props
     //this._isMounted = false;
-    this.onSend = this.onSend.bind(this);
-    this.onReceivedMessage = this.onReceivedMessage.bind(this);
+    //this.onSend = this.onSend.bind(this);
+    //this.onReceivedMessage = this.onReceivedMessage.bind(this);
 
-    this.renderBubble = this.renderBubble.bind(this);
-    this.renderFooter = this.renderFooter.bind(this);
-    this.onLoadEarlier = this.onLoadEarlier.bind(this);
+    //this.renderBubble = this.renderBubble.bind(this);
+    //this.renderFooter = this.renderFooter.bind(this);
+    //this.onLoadEarlier = this.onLoadEarlier.bind(this);
 
     this._isAlright = null;
   }
@@ -55,13 +43,13 @@ export default class Chat extends Component {
    * listen handler
    */
   componentDidMount() {
-    this.props.getChats();
+    /*this.props.getChats();
     this.props.receiveMessage();
     this.setState(() => {
       return {
         messages: this.props.chat,
       };
-    });
+    });*/
   }
 
   /**
@@ -74,7 +62,7 @@ export default class Chat extends Component {
   /**
    * 
    */
-  onLoadEarlier() {
+  /*onLoadEarlier() {
     this.setState((previousState) => {
       return {
         isLoadingEarlier: true
@@ -82,7 +70,7 @@ export default class Chat extends Component {
     });
 
     // get history message
-    /*setTimeout(() => {
+    setTimeout(() => {
       if (this._isMounted === true) {
         this.setState((previousState) => {
           return {
@@ -92,21 +80,15 @@ export default class Chat extends Component {
           };
         });
       }
-    }, 1000); // simulating network*/
+    }, 1000); // simulating network
   }
 
-  /**
-   * 
-   * @param {Array} messages 
-   */
   onSend(messages = []) {
     this.props.apiSendChat(this.state.username, messages[0]);
     this._storeMessages(messages);
   }
 
-  /**
-   * When the server sends a message to this.
-   */
+ 
   onReceivedMessage(messages) {
     this._storeMessages(messages);
   }
@@ -120,10 +102,7 @@ export default class Chat extends Component {
     });
   }
 
-  /**
-   * 
-   * @param {*} props 
-   */
+ 
   renderBubble(props) {
     return (
       <Bubble
@@ -137,10 +116,7 @@ export default class Chat extends Component {
     );
   }
   
-  /**
-   * 
-   * @param {*} props 
-   */
+
   renderFooter(props) {
     if (this.state.typingText) {
       return (
@@ -152,16 +128,16 @@ export default class Chat extends Component {
       );
     }
     return null;
-  }
+  }*/
 
   /**
    * 
    */
   render() {
-    const user = { _id: this.state.username || -1 };
+    //const user = { _id: this.state.username || -1 };
 
-    console.log(this.props.chat);
-    if (this.props.messages.isFetching) {
+    //console.log(this.props.chat);
+    /*if (this.props.messages.isFetching) {
         return (
             <View style={{flex: 1, justifyContent: 'center'}}>
                 <ActivityIndicator
@@ -170,10 +146,11 @@ export default class Chat extends Component {
                 />
             </View>
         )
-    }
+    }*/
 
     return (
-      <GiftedChat
+      <div>dit me</div>
+      /*<GiftedChat
         messages={this.state.messages}
         onSend={this.onSend}
         loadEarlier={this.state.loadEarlier}
@@ -182,7 +159,7 @@ export default class Chat extends Component {
         user={user}
         renderBubble={this.renderBubble}
         renderFooter={this.renderFooter}
-      />
+      />*/
     );
   }
 

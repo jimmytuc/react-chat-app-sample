@@ -4,7 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { apiGetChats, apiSendChat, receiveMessage } from '../actions/chat';
 
-//import ChatComponent from '../components/Chat';
+import ChatComponent from '../components/Chat';
+
+//import * as ChatActions from '../actions/chat';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
     chat: state.chat
   }),
   // mapping
+  //dispatch => bindActionCreators(ChatActions, dispatch)
   dispatch => {
     return {
         getChats: () => dispatch(apiGetChats()),
@@ -44,7 +47,7 @@ export default class ChatContainer extends Component {
   render() {
     return (
       <View style={styles.container}>
-        
+        <ChatComponent {...this.props} />
         <TouchableOpacity onPress={this.handleBack}>
           <Text style={styles.back}>Back</Text>
         </TouchableOpacity>
