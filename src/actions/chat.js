@@ -4,8 +4,9 @@ import Pusher from 'pusher-js/react-native';
 import { Id, Channel, BindName } from '../constants/Pusher';
 import { API } from '../constants/Ws';
 import axios from 'axios';
-import 'moment';
+//import moment from 'moment';
 
+import { Alert } from 'react-native';
 
 // pub/sub via chat-channel
 /**
@@ -53,7 +54,8 @@ const getChats = (payload) => {
  * 
  * @param {*} payload 
  */
-const newMessage = (payload) => {
+export function newMessage(payload) {
+    
     return {
         type: RECEIVE_MESSAGE,
         payload: payload
@@ -61,10 +63,7 @@ const newMessage = (payload) => {
 };
 
 // function for adding messages to AsyncStorage
-const addToStorage = (data) => {
-    AsyncStorage.setItem(data.convo_id + data.sent_at, JSON.stringify(data), () => {})
-}
-
+const addToStorage = (resp) => AsyncStorage.setItem(resp.message._id + resp.message.createdAt, JSON.stringify(resp.message))
 
 // function that listens to pusher for new messages and dispatches a new
 // message action
@@ -72,15 +71,39 @@ const addToStorage = (data) => {
  * 
  * @param {*} dispatch 
  */
-export function receiveMessage(dispatch){
-    const socket = new Pusher(Id);
+export function receiveMessage(cb){
+    Pusher.logToConsole = true;
+    const socket = new Pusher(Id, {
+      cluster: 'ap1',
+      encrypted: true
+    });
     const channel = socket.subscribe(Channel);
-    channel.bind(BindName,
-        (data) => {
-            addToStorage(data.chat);
-            dispatch(newMessage(data.chat));
-        }
-    );
+
+    try {
+        const responder = {
+            sender: 'guest1',
+            message: { 
+                text: '',
+                user: {
+                    _id: 99,
+                    name: "@nana"
+                },
+                createdAt: new Date(),
+                _id: Math.round(Math.random() * 1000000)
+            }
+        };
+        channel.bind(BindName,
+            (data) => {
+                console.log('received from server: ', data);
+                responder.message.text = data.chat;
+                addToStorage(responder);
+                cb(responder);
+            }
+        );
+    } catch(err) {
+        Alert.alert('receiveMessage ', JSON.stringify(err));
+    }
+    
 }
 
 /**
@@ -89,14 +112,17 @@ export function receiveMessage(dispatch){
  * @param {*} message 
  */
 export function apiSendChat(sender, message){
-    const chat = {sender: sender, message: message, sent_at: moment().format() };
+    const chat = { sender: sender, message: message };
     return dispatch => {
-        return axios.get(API + JSON.stringify(chat))
-          .then(response => {
+        return axios.post(API, {
+            data: chat
+        }).then(response => {
             // console.log('Message sent!');
-            dispatch(sendChat(response));
-          }).catch(err =>{
-              console.log("error", err);
+            //Alert.alert('Sent: ', JSON.stringify(response));
+            //dispatch(sendChat(response));
+          }).catch(err => {
+              //console.log("error", err);
+              Alert.alert('apiSendChat > Error: ', JSON.stringify(err));
           });
     };
 };

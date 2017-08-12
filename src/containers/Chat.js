@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, TouchableHighlight, View, Text, TouchableOpacity } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { apiGetChats, apiSendChat, receiveMessage } from '../actions/chat';
+import { apiGetChats, apiSendChat, newMessage } from '../actions/chat';
 
 import ChatComponent from '../components/Chat';
 
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     return {
         getChats: () => dispatch(apiGetChats()),
         sendChat: (sender, msg) => dispatch(apiSendChat(sender, msg)),
-        receiveMsg: () => receiveMessage(dispatch)
+        newMsg: (msg) => dispatch(newMessage(msg))
     }
   }
 )
@@ -45,13 +45,14 @@ export default class ChatContainer extends Component {
   };
 
   render() {
-    return (
+    /*return (
       <View style={styles.container}>
         <ChatComponent {...this.props} />
         <TouchableOpacity onPress={this.handleBack}>
           <Text style={styles.back}>Back</Text>
         </TouchableOpacity>
       </View>
-    );
+    );*/
+    return(<ChatComponent {...this.props} />);
   }
 }
