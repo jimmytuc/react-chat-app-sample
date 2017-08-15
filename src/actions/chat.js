@@ -87,6 +87,7 @@ export function receiveMessage(cb){
                     sender: 'guest1',
                     message: { 
                         text: '',
+                        attachment: null,
                         user: {
                             _id: 99,
                             name: "@nana"
@@ -99,6 +100,9 @@ export function receiveMessage(cb){
 
                 console.log('received from server: ', data);
                 responder.message.text = data.chat;
+                responder.message.attachment = data.attachment;
+                // data.attachment { type: string, payload: []}
+
                 addToStorage(responder);
                 cb(responder);
             }
